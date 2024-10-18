@@ -1,3 +1,4 @@
+// HackerRank
 struct CountTriplets: Algorithm {
 
     // MARK: - Solution
