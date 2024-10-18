@@ -1,6 +1,7 @@
 struct AlgorithmFactory {
     private let algorithms: [String: Algorithm] = [
         "pascal-triangle": PascalTriangle(),
+        "count-triplets": CountTriplets(),
         "island-count": IslandCount()
     ]
 
