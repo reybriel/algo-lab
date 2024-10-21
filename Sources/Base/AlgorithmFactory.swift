@@ -3,6 +3,7 @@ struct AlgorithmFactory {
         "frequency-queries": FrequencyQueries(),
         "max-subarray-sum": MaxSubarraySum(),
         "pascal-triangle": PascalTriangle(),
+        "missing-number": MissingNumber(),
         "count-triplets": CountTriplets(),
         "island-count": IslandCount()
     ]
