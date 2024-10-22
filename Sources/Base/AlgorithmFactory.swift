@@ -1,5 +1,6 @@
 struct AlgorithmFactory {
     private let algorithms: [String: Algorithm] = [
+        "trapping-rainwater": TrappingRainwater(),
         "frequency-queries": FrequencyQueries(),
         "max-subarray-sum": MaxSubarraySum(),
         "pascal-triangle": PascalTriangle(),
