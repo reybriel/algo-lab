@@ -6,6 +6,7 @@ struct AlgorithmFactory {
         "pascal-triangle": PascalTriangle(),
         "missing-number": MissingNumber(),
         "count-triplets": CountTriplets(),
+        "binary-search": BinarySearch(),
         "island-count": IslandCount()
     ]
 
