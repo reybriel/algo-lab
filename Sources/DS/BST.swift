@@ -1,5 +1,5 @@
 final class TreeNode {
-    let key: Int
+    var key: Int
     var height: Int = 1
     var lhs: TreeNode? = nil
     var rhs: TreeNode? = nil
@@ -14,6 +14,10 @@ final class Tree {
 
     func insert(key: Int) {
         root = Self.insert(key: key, from: root)
+    }
+
+    func remove(key: Int) {
+        root = Self.remove(key: key, from: root)
     }
 
     func traverse(_ kind: TraverseKind) {
@@ -66,6 +70,14 @@ extension Tree {
         return rhs
     }
 
+    static func getMin(_ node: TreeNode?) -> TreeNode? {
+        var current = node
+        while current?.lhs != nil {
+            current = current?.lhs
+        }
+        return current
+    }
+
     static func rotateRight(_ node: TreeNode) -> TreeNode? {
         let lhs = node.lhs
         let buf = lhs?.rhs
@@ -79,16 +91,9 @@ extension Tree {
         return lhs
     }
 
-    static func insert(key: Int, from node: TreeNode?) -> TreeNode? {
-        guard let node else { return TreeNode(key: key) }
+    static func adjustBalance(from node: TreeNode?, key: Int) -> TreeNode? {
+        guard let node else { return nil }
 
-        if key < node.key {
-            node.lhs = insert(key: key, from: node.lhs)
-        } else {
-            node.rhs = insert(key: key, from: node.rhs)
-        }
-
-        node.height = max(getHeight(node.lhs), getHeight(node.rhs)) + 1
         let balance = getBalance(node)
 
         if balance > 1, let lhs = node.lhs, key < lhs.key {
@@ -110,6 +115,47 @@ extension Tree {
         }
 
         return node
+    }
+
+    static func insert(key: Int, from node: TreeNode?) -> TreeNode? {
+        guard let node else { return TreeNode(key: key) }
+
+        if key < node.key {
+            node.lhs = insert(key: key, from: node.lhs)
+        } else {
+            node.rhs = insert(key: key, from: node.rhs)
+        }
+
+        node.height = max(getHeight(node.lhs), getHeight(node.rhs)) + 1
+        return adjustBalance(from: node, key: key)
+    }
+
+    static func remove(key: Int, from node: TreeNode?) -> TreeNode? {
+        guard let node else { return nil }
+
+        if key < node.key {
+            node.lhs = remove(key: key, from: node.lhs)
+        } else if key > node.key {
+            node.rhs = remove(key: key, from: node.rhs)
+        } else {
+
+            if node.lhs == nil {
+                return node.rhs
+            }
+
+            if node.rhs == nil {
+                return node.lhs
+            }
+
+            guard let temp = getMin(node.rhs) else {
+                fatalError("should never be nil")
+            }
+            node.key = temp.key
+            node.rhs = remove(key: temp.key, from: node.rhs)
+        }
+
+        node.height = max(getHeight(node.lhs), getHeight(node.rhs)) + 1
+        return adjustBalance(from: node, key: key)
     }
 
     static func preOrderTraversal(_ node: TreeNode?) {
