@@ -7,6 +7,7 @@ struct AlgorithmFactory {
         "missing-number": MissingNumber(),
         "count-triplets": CountTriplets(),
         "binary-search": BinarySearch(),
+        "traverse-tree": TraverseTree(),
         "island-count": IslandCount()
     ]
 

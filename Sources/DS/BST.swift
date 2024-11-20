@@ -15,6 +15,31 @@ final class Tree {
     func insert(key: Int) {
         root = Self.insert(key: key, from: root)
     }
+
+    func traverse(_ kind: TraverseKind) {
+        switch kind {
+        case .bfs:
+            Self.bfsTraversal(root)
+        case .dfs(let order):
+            switch order {
+            case .inOrder:
+                Self.inOrderTraversal(root)
+            case .preOrder:
+                Self.preOrderTraversal(root)
+            case .postOrder:
+                Self.postOrderTraversal(root)
+            }
+        }
+    }
+
+    enum TraverseKind {
+        case dfs(DFSOrder)
+        case bfs
+
+        enum DFSOrder {
+            case inOrder, preOrder, postOrder
+        }
+    }
 }
 
 extension Tree {
@@ -85,5 +110,43 @@ extension Tree {
         }
 
         return node
+    }
+
+    static func preOrderTraversal(_ node: TreeNode?) {
+        guard let node else { return }
+
+        print(node.key, terminator: " ")
+        preOrderTraversal(node.lhs)
+        preOrderTraversal(node.rhs)
+    }
+
+    static func inOrderTraversal(_ node: TreeNode?) {
+        guard let node else { return }
+
+        inOrderTraversal(node.lhs)
+        print(node.key, terminator: " ")
+        inOrderTraversal(node.rhs)
+    }
+
+    static func postOrderTraversal(_ node: TreeNode?) {
+        guard let node else { return }
+
+        postOrderTraversal(node.lhs)
+        postOrderTraversal(node.rhs)
+        print(node.key, terminator: " ")
+    }
+
+    static func bfsTraversal(_ node: TreeNode?) {
+        guard let node else { return }
+
+        var queue: [TreeNode] = [node]
+
+        while !queue.isEmpty {
+            let node = queue.removeFirst()
+            print(node.key, terminator: " ")
+
+            if let lhs = node.lhs { queue.append(lhs) }
+            if let rhs = node.rhs { queue.append(rhs) }
+        }
     }
 }
