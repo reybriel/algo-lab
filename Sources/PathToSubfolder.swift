@@ -1,4 +1,4 @@
-// run command => path-to-subfolder 9 0-7,3-abc 0-*-def 3-*-ghi 7-9-jkl 9-*-mno 8-*-pqr
+// run command => path-to-subfolder 9 0-3,7-abc 0-*-def 3-*-ghi 7-9-jkl 9-*-mno 8-*-pqr
 // result => abc -> jkl -> mno
 
 struct PathToSubfolder: Algorithm {
@@ -38,13 +38,13 @@ struct PathToSubfolder: Algorithm {
             var path: [String] = []
 
             for rootFolder in rootFolders {
-                if try searchFolderDFS(folder: rootFolder, path: &path) {
-                    break
-                }
+                try searchFolderDFS(folder: rootFolder, path: &path)
             }
 
             return path.reversed().joined(separator: " -> ")
         }
+
+        // MARK: DFS approach
 
         @discardableResult
         private func searchFolderDFS(folder: Folder, path: inout [String]) throws -> Bool {
@@ -63,6 +63,43 @@ struct PathToSubfolder: Algorithm {
             }
 
             return false
+        }
+
+        // MARK: BFS approach
+
+        private func searchFolderBFS(folder: Folder, path: inout [String]) throws {
+            var queue = [folder]
+            var folderStack: [Folder] = []
+            var isFolderFound = false
+
+            while !queue.isEmpty {
+                let folder = queue.removeFirst()
+                folderStack.append(folder)
+
+                if folder.id == target {
+                    isFolderFound = true
+                    break
+                }
+
+                for subfolder in folder.subfolders {
+                    let instance = try searchFolderInstance(id: subfolder)
+                    queue.append(instance)
+                }
+            }
+
+            guard isFolderFound else { return }
+
+            var lastVisitedFolder = folderStack.removeLast()
+            path.append(lastVisitedFolder.name) // first pop returns the target folder
+
+            while !folderStack.isEmpty {
+                let folder = folderStack.removeLast()
+
+                if folder.subfolders.contains(lastVisitedFolder.id) { // O(n)
+                    lastVisitedFolder = folder
+                    path.append(folder.name)
+                }
+            }
         }
 
         private func searchFolderInstance(id: Int) throws -> Folder {
