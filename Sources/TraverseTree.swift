@@ -1,3 +1,10 @@
+// run-command => traverse-tree 1 2 3 4 5 6 7 8 9 10
+// output:
+// BFS: 4 2 8 1 3 6 9 5 7 10
+// DFS(in-order): 1 2 3 4 5 6 7 8 9 10
+// DFS(pre-order): 4 2 1 3 8 6 5 7 9 10
+// DFS(post-order): 1 3 2 5 7 6 10 9 8 4
+
 struct TraverseTree: Algorithm {
 
     // MARK: - Solution
@@ -5,7 +12,7 @@ struct TraverseTree: Algorithm {
     struct Solution {
 
         func run(array: [Int]) {
-            let tree = Tree()
+            let tree = Tree<Int>()
 
             for item in array {
                 tree.insert(key: item)

@@ -1,22 +1,22 @@
-final class TreeNode {
-    var key: Int
+final class TreeNode<T: Comparable> {
+    var key: T
     var height: Int = 1
     var lhs: TreeNode? = nil
     var rhs: TreeNode? = nil
 
-    init(key: Int) {
+    init(key: T) {
         self.key = key
     }
 }
 
-final class Tree {
-    var root: TreeNode?
+final class Tree<T: Comparable> {
+    var root: TreeNode<T>?
 
-    func insert(key: Int) {
+    func insert(key: T) {
         root = Self.insert(key: key, from: root)
     }
 
-    func remove(key: Int) {
+    func remove(key: T) {
         root = Self.remove(key: key, from: root)
     }
 
@@ -47,17 +47,17 @@ final class Tree {
 }
 
 extension Tree {
-    static func getHeight(_ node: TreeNode?) -> Int {
+    static func getHeight(_ node: TreeNode<some Comparable>?) -> Int {
         guard let node else { return 0 }
         return node.height
     }
 
-    static func getBalance(_ node: TreeNode?) -> Int {
+    static func getBalance(_ node: TreeNode<some Comparable>?) -> Int {
         guard let node else { return 0 }
         return getHeight(node.lhs) - getHeight(node.rhs)
     }
 
-    static func rotateLeft(_ node: TreeNode) -> TreeNode? {
+    static func rotateLeft<C: Comparable>(_ node: TreeNode<C>) -> TreeNode<C>? {
         let rhs = node.rhs
         let buf = rhs?.lhs
 
@@ -70,7 +70,7 @@ extension Tree {
         return rhs
     }
 
-    static func getMin(_ node: TreeNode?) -> TreeNode? {
+    static func getMin<C: Comparable>(_ node: TreeNode<C>?) -> TreeNode<C>? {
         var current = node
         while current?.lhs != nil {
             current = current?.lhs
@@ -78,7 +78,7 @@ extension Tree {
         return current
     }
 
-    static func rotateRight(_ node: TreeNode) -> TreeNode? {
+    static func rotateRight<C: Comparable>(_ node: TreeNode<C>) -> TreeNode<C>? {
         let lhs = node.lhs
         let buf = lhs?.rhs
 
@@ -91,7 +91,7 @@ extension Tree {
         return lhs
     }
 
-    static func adjustBalance(from node: TreeNode?, key: Int) -> TreeNode? {
+    static func adjustBalance<C: Comparable>(from node: TreeNode<C>?, key: C) -> TreeNode<C>? {
         guard let node else { return nil }
 
         let balance = getBalance(node)
@@ -117,7 +117,7 @@ extension Tree {
         return node
     }
 
-    static func insert(key: Int, from node: TreeNode?) -> TreeNode? {
+    static func insert<C: Comparable>(key: C, from node: TreeNode<C>?) -> TreeNode<C>? {
         guard let node else { return TreeNode(key: key) }
 
         if key < node.key {
@@ -130,7 +130,7 @@ extension Tree {
         return adjustBalance(from: node, key: key)
     }
 
-    static func remove(key: Int, from node: TreeNode?) -> TreeNode? {
+    static func remove<C: Comparable>(key: C, from node: TreeNode<C>?) -> TreeNode<C>? {
         guard let node else { return nil }
 
         if key < node.key {
@@ -158,7 +158,7 @@ extension Tree {
         return adjustBalance(from: node, key: key)
     }
 
-    static func preOrderTraversal(_ node: TreeNode?) {
+    static func preOrderTraversal(_ node: TreeNode<some Comparable>?) {
         guard let node else { return }
 
         print(node.key, terminator: " ")
@@ -166,7 +166,7 @@ extension Tree {
         preOrderTraversal(node.rhs)
     }
 
-    static func inOrderTraversal(_ node: TreeNode?) {
+    static func inOrderTraversal(_ node: TreeNode<some Comparable>?) {
         guard let node else { return }
 
         inOrderTraversal(node.lhs)
@@ -174,7 +174,7 @@ extension Tree {
         inOrderTraversal(node.rhs)
     }
 
-    static func postOrderTraversal(_ node: TreeNode?) {
+    static func postOrderTraversal(_ node: TreeNode<some Comparable>?) {
         guard let node else { return }
 
         postOrderTraversal(node.lhs)
@@ -182,7 +182,7 @@ extension Tree {
         print(node.key, terminator: " ")
     }
 
-    static func bfsTraversal(_ node: TreeNode?) {
+    static func bfsTraversal(_ node: TreeNode<some Comparable>?) {
         guard let node else { return }
 
         var queue: [TreeNode] = [node]
