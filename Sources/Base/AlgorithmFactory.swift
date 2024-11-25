@@ -2,6 +2,7 @@ struct AlgorithmFactory {
     private let algorithms: [String: Algorithm] = [
         "trapping-rainwater": TrappingRainwater(),
         "frequency-queries": FrequencyQueries(),
+        "path-to-subfolder": PathToSubfolder(),
         "max-subarray-sum": MaxSubarraySum(),
         "pascal-triangle": PascalTriangle(),
         "missing-number": MissingNumber(),
